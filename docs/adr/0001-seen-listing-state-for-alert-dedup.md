@@ -1,0 +1,8 @@
+# Seen-listing state for Alert deduplication
+
+We need to avoid re-sending an Alert for a Listing already Alerted on in a previous pass ([#5](https://github.com/JulesCinc/vinted-bot/issues/5)). We maintain a persistent seen-set — a SQLite file (Python stdlib `sqlite3`, path configurable via env var, default local path) recording each Alerted Listing's Vinted `id` and the timestamp it was Alerted — and never Alert the same Listing `id` twice, never pruning old entries. The Discord Alert is sent *before* the seen record is written, not after: a crash between the two risks a rare duplicate Alert next pass, which is a cheaper failure than the alternative (record-then-send) silently and permanently losing an Alert if the send fails. On the bot's very first-ever run, currently-Underpriced Listings are seeded into the seen-set without Alerting, to avoid a startup flood of Alerts for listings that were already on the market before the bot existed; this seeding is deliberately *not* repeated when a new GPU Model is later added to the tracked list — the seen-set can't distinguish "new to tracking" from "new to the market," and adding that distinction was judged not worth the extra state for a rare, user-initiated event.
+
+## Considered Options
+
+- **Re-alert on further price drops** (rejected): the Market Price Baseline is recomputed from currently-active listings every pass, so its median drifts pass-to-pass even when a Listing's price doesn't change — price-aware re-alerting would produce Alerts that look like duplicates for a Listing sitting still.
+- **Record-then-send ordering** (rejected): turns a transient Discord delivery failure into a silent, permanent miss, since the Listing is marked seen either way.

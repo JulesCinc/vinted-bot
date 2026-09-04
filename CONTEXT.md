@@ -24,5 +24,5 @@ A Listing whose price falls far enough below its Market Price Baseline to be wor
 _Avoid_: Deal, bargain, cheap listing.
 
 **Alert**:
-A notification sent to the user about one Underpriced Listing.
+A notification sent to the user about one Underpriced Listing. Sent at most once per Listing, ever — a Listing that already triggered an Alert is never Alerted again, even if its price drops further afterward.
 _Avoid_: Notification (reserve for generic/system use), ping.
