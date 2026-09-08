@@ -26,3 +26,7 @@ _Avoid_: Deal, bargain, cheap listing.
 **Alert**:
 A notification sent to the user about one Underpriced Listing. Sent at most once per Listing, ever — a Listing that already triggered an Alert is never Alerted again, even if its price drops further afterward.
 _Avoid_: Notification (reserve for generic/system use), ping.
+
+**Pass**:
+One run of the bot: check every tracked GPU Model against Vinted, recompute Market Price Baselines, and send any resulting Alerts. Runs once daily. A Pass can end early — e.g. aborted partway through after an anti-bot block — in which case GPU Models already checked before the abort are still processed normally, and the untried remainder waits for tomorrow's Pass.
+_Avoid_: Run (ambiguous with "the bot's process" generally), cycle, check.
