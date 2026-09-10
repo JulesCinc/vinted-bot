@@ -1,0 +1,16 @@
+[project]
+name = "vinted-bot"
+version = "0.1.0"
+description = "Watches vinted.fr for underpriced GPU listings and alerts the user."
+requires-python = ">=3.12"
+dependencies = [
+    "vinted_scraper>=4.0.0,<5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
